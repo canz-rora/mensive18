@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mensive Challenge ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Trebuchet MS', sans-serif;
+    background: linear-gradient(135deg, #ffc6df, #d9c5ff);
+    color: #713b70;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: rgba(255,255,255,0.85);
+    width: 100%;
+    max-width: 420px;
+    padding: 25px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 10px 35px #a85e9670;
+}
+
+h1 {
+    font-size: 25px;
+}
+
+p {
+    line-height: 1.6;
+}
+
+button {
+    border: none;
+    padding: 13px 20px;
+    border-radius: 14px;
+    background: #ed80b5;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 5px;
+}
+
+button:active {
+    transform: scale(.95);
+}
+
+button:hover {
+    background: #d75b9b;
+}
+
+.progress {
+    background: #f4d4e7;
+    height: 10px;
+    border-radius: 20px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    width: 0%;
+    background: #ed80b5;
+    transition: .4s;
+}
+
+.game-area {
+    min-height: 220px;
+    position: relative;
+    margin-top: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+#heart {
+    font-size: 40px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.option {
+    display: inline-block;
+    width: 75px;
+    height: 65px;
+    background: #f8c4df;
+    border-radius: 15px;
+    font-size: 25px;
+}
+
+input {
+    padding: 12px;
+    border-radius: 12px;
+    border: 2px solid #e9a5cc;
+    width: 100%;
+    font-size: 18px;
+    text-align: center;
+}
+
+#message {
+    color: #d34b91;
+    font-weight: bold;
+    min-height: 25px;
+}
+
+.final {
+    animation: muncul 1s ease;
+}
+
+@keyframes muncul {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.big-heart {
+    font-size: 65px;
+    animation: beat 1s infinite;
+}
+
+@keyframes beat {
+    50% { transform: scale(1.2); }
+}
+
+.color {
+    width: 65px;
+    height: 65px;
+    border-radius: 15px;
+    border: 3px solid white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div id="intro">
+        <h1>Happy Mensive</h1>
+        <p>Selamat malam </p>
+        <p>
+            ayo kita mulai dengan absen singkat dulu
+            ada sasta ada amelia ada widyaningrum
+        </p>
+        <p>oke tanpa berlama lama langsung aja mulai</p>
+        <button onclick="start()">coba pencet</button>
+    </div>
+
+    <div id="game" class="hidden">
+        <h2 id="title"></h2>
+        <p id="description"></p>
+
+        <div class="progress">
+            <div class="bar" id="bar"></div>
+        </div>
+
+        <p id="counter"></p>
+
+        <div class="game-area" id="area"></div>
+
+        <p id="message"></p>
+    </div>
+
+    <div id="ending" class="hidden final">
+        <div class="big-heart">❤️</div>
+        <h1>HAPPY MENSIVE 18</h1>
+
+        <p>
+            hahaha seru gak minigamenya
+            kalo seru coba bilamg aku 
+            bakalan bikinin minigame
+            yg banyak buat kamu
+        </p>
+
+        <hr style="border:1px solid #f3c1dc">
+
+        <h2>For Sayangku Cintaku❤️</h2>
+
+        <p id="loveText">
+            happy mensive ke 18 sayanggku
+            tinggal berapa bulan lagi udah 
+            anniversery ke 2 waktu berjalan
+            dengan cepat
+            perjalanan kita baru aja dimulai
+            karena kita masih bakalan menjalani
+            hidup bersama yg panjang
+            makasiih yaa sayangg udah bertahan
+            sama aku sampai detik ini, kamu juga
+            sabar ngadepin aku yg sering bikin
+            kamu kesel marah bt, katanya hubugan
+            fase 3 itu lebih susah buat kontrol ego
+            jadi aku yakin kita pasti bisa lewatin
+            fase ini, fase tersulit karena harus
+            bisa atur ego 
+            aku gamau kita berpisah, hanya karena
+            ego, di saat kamu bener bener udah
+            lelah capek sama aku, bilang aja
+            yaa sayangg 
+            THANK YOU AND I LOVE YOUUUU
+        </p>
+
+        <h2>♡ Forever With You ♡</h2>
+        <p>Made with heart ❤️</p>
+    </div>
+
+</div>
+
+<script>
+
+let level = 0;
+
+function start() {
+    document.getElementById("intro").classList.add("hidden");
+    document.getElementById("game").classList.remove("hidden");
+    loadGame();
+}
+
+function updateProgress() {
+    document.getElementById("bar").style.width =
+        (level / 5 * 100) + "%";
+}
+
+function loadGame() {
+    updateProgress();
+
+    document.getElementById("message").innerText = "";
+    document.getElementById("area").innerHTML = "";
+
+    if (level === 0) game1();
+    else if (level === 1) game2();
+    else if (level === 2) game3();
+    else if (level === 3) game4();
+    else if (level === 4) game5();
+    else finish();
+}
+
+function nextGame() {
+    level++;
+    loadGame();
+}
+
+// GAME 1: CATCH HEART
+
+let caught = 0;
+
+function game1() {
+    caught = 0;
+
+    title.innerText = "GAME 1: CATCH THE HEART ❤️";
+    description.innerText = "Tangkap 10 hati yang muncul!";
+    counter.innerText = "Hati: 0/10";
+
+    let area = document.getElementById("area");
+
+    function spawn() {
+        area.innerHTML = "";
+
+        let heart = document.createElement("div");
+        heart.id = "heart";
+        heart.innerText = "❤️";
+
+        heart.style.left =
+            Math.random() * 75 + "%";
+
+        heart.style.top =
+            Math.random() * 65 + "%";
+
+        heart.onclick = function() {
+            caught++;
+
+            counter.innerText =
+                "Hati: " + caught + "/10";
+
+            if (caught >= 10) {
+                message.innerText = "Akhirnya! 😭";
+                setTimeout(nextGame, 800);
+            } else {
+                spawn();
+            }
+        };
+
+        area.appendChild(heart);
+    }
+
+    spawn();
+}
+
+// GAME 2: WRONG BOX
+
+function game2() {
+    title.innerText = "GAME 2: PILIH KOTAK";
+    description.innerText =
+        "Pilih kotak yang menyimpan hadiah. Jangan sampai salah!";
+
+    let answer = Math.floor(Math.random() * 4);
+
+    for (let i = 0; i < 4; i++) {
+        let btn = document.createElement("button");
+
+        btn.className = "option";
+        btn.innerText = "❔";
+
+        btn.onclick = function() {
+            if (i === answer) {
+                btn.innerText = "🎁";
+                message.innerText = "Benar! Kamu beruntung!";
+                setTimeout(nextGame, 1000);
+            } else {
+                btn.innerText = "💀";
+                message.innerText =
+                    "SALAH! Coba lagi. WKWKWK";
+            }
+        };
+
+        area.appendChild(btn);
+    }
+}
+
+// GAME 3: MATH CHALLENGE
+
+let question = 0;
+
+let questions = [
+    [12, 5, 17],
+    [20, 8, 28],
+    [15, 7, 22],
+    [30, 9, 39],
+    [25, 15, 40]
+];
+
+function game3() {
+    question = 0;
+
+    title.innerText = "GAME 3: MATH CHALLENGE 🧠";
+    description.innerText =
+        "Jawab 5 soal ini. Jangan pakai kalkulator!";
+    
+    askQuestion();
+}
+
+function askQuestion() {
+    let q = questions[question];
+
+    area.innerHTML = `
+        <h2>${q[0]} + ${q[1]} = ?</h2>
+        <input type="number" id="answer" placeholder="Jawabanmu">
+        <br><br>
+        <button onclick="checkAnswer()">Jawab!</button>
+    `;
+
+    counter.innerText =
+        "Soal " + (question + 1) + "/5";
+}
+
+function checkAnswer() {
+    let value = Number(
+        document.getElementById("answer").value
+    );
+
+    if (value === questions[question][2]) {
+        question++;
+
+        if (question >= 5) {
+            message.innerText = "Pintar juga ternyata! ❤️";
+            setTimeout(nextGame, 1000);
+        } else {
+            message.innerText = "Benar!";
+            askQuestion();
+        }
+
+    } else {
+        message.innerText = "Salah! Coba hitung lagi. 😭";
+    }
+}
+
+// GAME 4: TAP CHALLENGE
+
+let taps = 0;
+
+function game4() {
+    taps = 0;
+
+    title.innerText = "GAME 4: TAP CHALLENGE 👆";
+    description.innerText =
+        "Tekan tombol ini sebanyak 30 kali!";
+
+    counter.innerText = "0/30";
+
+    area.innerHTML = `
+        <button style="font-size:22px;padding:25px"
+        onclick="tapButton()">
+        TAP ME! 💗
+        </button>
+    `;
+}
+
+function tapButton() {
+    taps++;
+
+    counter.innerText = taps + "/30";
+
+    if (taps >= 30) {
+        message.innerText = "Jari kamu masih aman? 😭";
+        setTimeout(nextGame, 1000);
+    }
+}
+
+// GAME 5: MEMORY TEST
+
+let sequence = [];
+let playerSequence = [];
+
+const colors = [
+    "#ff5c8a",
+    "#8b72e8",
+    "#62c9a5",
+    "#ffbd59"
+];
+
+function game5() {
+    title.innerText = "GAME 5: MEMORY TEST 🧩";
+    description.innerText =
+        "Ingat urutan warna, lalu ulangi urutannya!";
+
+    sequence = [];
+
+    for (let i = 0; i < 4; i++) {
+        sequence.push(
+            Math.floor(Math.random() * 4)
+        );
+    }
+
+    playerSequence = [];
+
+    area.innerHTML = `
+        <h3 id="sequenceText">
+        Perhatikan urutan warna!
+        </h3>
+        <div id="colorBox"></div>
+    `;
+
+    let box = document.getElementById("colorBox");
+
+    colors.forEach((color, index) => {
+        let btn = document.createElement("button");
+
+        btn.className = "color";
+        btn.style.background = color;
+        btn.disabled = true;
+
+        btn.onclick = () => selectColor(index);
+
+        box.appendChild(btn);
+    });
+
+    showSequence();
+}
+
+function showSequence() {
+    let i = 0;
+
+    let buttons =
+        document.querySelectorAll(".color");
+
+    function showNext() {
+        if (i >= sequence.length) {
+            buttons.forEach(b => b.disabled = false);
+
+            document.getElementById("sequenceText")
+                .innerText = "Sekarang ulangi urutannya!";
+
+            return;
+        }
+
+        let index = sequence[i];
+
+        buttons[index].style.opacity = "0.4";
+
+        setTimeout(() => {
+            buttons[index].style.opacity = "1";
+            i++;
+            setTimeout(showNext, 400);
+        }, 500);
+    }
+
+    showNext();
+}
+
+function selectColor(index) {
+    playerSequence.push(index);
+
+    let current =
+        playerSequence.length - 1;
+
+    if (playerSequence[current] !== sequence[current]) {
+        message.innerText = "SALAH! Ulangi dari awal. 😭";
+
+        setTimeout(() => {
+            playerSequence = [];
+            message.innerText = "";
+        }, 700);
+
+        return;
+    }
+
+    if (playerSequence.length === sequence.length) {
+        message.innerText =
+            "KAMU BERHASIL! SEMUA GAME SELESAI!";
+
+        setTimeout(nextGame, 1500);
+    }
+}
+
+// ENDING
+
+function finish() {
+    document.getElementById("game").classList.add("hidden");
+    document.getElementById("ending").classList.remove("hidden");
+}
+
+</script>
+
+</body>
+</html>
